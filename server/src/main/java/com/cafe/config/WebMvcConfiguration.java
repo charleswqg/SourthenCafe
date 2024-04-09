@@ -44,7 +44,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Bean
     public Docket docket() {
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("SouthernCafe接口文档")
+                .title("SouthernCafe")
                 .version("2.0")
                 .description("SouthernCafe接口文档")
                 .build();
