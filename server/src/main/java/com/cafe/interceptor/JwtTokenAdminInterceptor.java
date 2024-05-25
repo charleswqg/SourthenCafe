@@ -1,6 +1,7 @@
 package com.cafe.interceptor;
 
 import com.cafe.constant.JwtClaimsConstant;
+import com.cafe.context.BaseContext;
 import com.cafe.properties.JwtProperties;
 import com.cafe.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -41,12 +42,14 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         //1、从请求头中获取令牌
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        //2、校验令牌
+        //2、校验令牌,每次前端发请求，都要先过拦截器，然后进controller和service。
+        // 所以可以用threadlocal从jwt里获取当前用户的id
         try {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
             log.info("当前员工id：", empId);
+            BaseContext.setCurrentId(empId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {
