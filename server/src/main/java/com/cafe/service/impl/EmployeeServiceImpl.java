@@ -6,18 +6,23 @@ import com.cafe.constant.StatusConstant;
 import com.cafe.context.BaseContext;
 import com.cafe.dto.EmployeeDTO;
 import com.cafe.dto.EmployeeLoginDTO;
+import com.cafe.dto.EmployeePageQueryDTO;
 import com.cafe.entity.Employee;
 import com.cafe.exception.AccountLockedException;
 import com.cafe.exception.AccountNotFoundException;
 import com.cafe.exception.PasswordErrorException;
 import com.cafe.mapper.EmployeeMapper;
+import com.cafe.result.PageResult;
 import com.cafe.service.EmployeeService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -79,6 +84,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         //TODO 后期修改成当前登录用户的id就行
         employeeMapper.insert(employee);
 
+    }
+
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        Page<Employee>page=employeeMapper.pageQuery(employeePageQueryDTO);
+        long total=page.getTotal();
+        List<Employee> records=page.getResult();
+        return new PageResult(total,records);
     }
 
 }

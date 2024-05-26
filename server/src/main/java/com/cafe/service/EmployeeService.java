@@ -2,7 +2,9 @@ package com.cafe.service;
 
 import com.cafe.dto.EmployeeDTO;
 import com.cafe.dto.EmployeeLoginDTO;
+import com.cafe.dto.EmployeePageQueryDTO;
 import com.cafe.entity.Employee;
+import com.cafe.result.PageResult;
 
 public interface EmployeeService {
 
@@ -19,4 +21,6 @@ public interface EmployeeService {
      * @return
      */
     void save(EmployeeDTO employeeDTO);
+
+    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }
